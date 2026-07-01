@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="keywords" content="HTML, Css">
+    <meta name="description" content="UniversitySystem">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- icon -->
+    <link rel="shortcut icon" href="images.jpeg" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Tagesschrift&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Style Css -->
+    <link rel="stylesheet" href="css/register.css">
+    <title>Register Page</title>
+</head>
+
+<body>
+    <!-- start Header  -->
+    <header>
+        <h1>Faculty of computers science and informatics</h1>
+    </header>
+    <section class="header">
+        <figure>
+            <img src="images.jpeg" class="logo" alt="FCI-Zu" title="FCI-ZU">
+        </figure>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </nav>
+    </section>
+    <!-- end header -->
+
+
+    <!-- ======================== -->
+    <!-- ======================== -->
+    <!-- ======================== -->
+
+
+    <!-- start main section -->
+    <main>
+        <section class="data">
+            <h3>Create new account</h3>
+            <form action="" method="get">
+                <label for="name">Full Name</label><br>
+                <input id="name" type="text" placeholder="Name" name="name" class="form-control"><br>
+
+                <label for="email">Email</label><br>
+                <input id="email" type="email" placeholder="Email" name="email" class="form-control"><br>
+
+                <label for="password">Password</label><br>
+                <input id="password" type="password" placeholder="Password" name="password" class="form-control"><br>
+
+                <label for="date">Date Of Birth</label><br>
+                <input type="datetime-local" name="date" id="date" class="form-control"><br>
+
+                <label for="department">Departments</label><br>
+                <select id="department" class="form-control">
+                    <option value="cs" selected>CS</option>
+                    <option value="it">IT</option>
+                    <option value="is">IS</option>
+                    <option value="gis">GIS</option>
+                </select><br>
+
+
+                <label>Gender</label><br>
+                <div class="gender">
+                    <input type="radio" name="gender" value="male"> <label for="Male">Male</label><br>
+                    <input type="radio" name="gender" value="female"> <label for="Female">Female</label>
+                    <br>
+                </div>
+                <input type="submit" class="form-control btn" value="Register">
+        </section>
+    </main>
+    <!-- end main section -->
+
+
+    <!-- ======================== -->
+    <!-- ======================== -->
+    <!-- ======================== -->
+
+
+    <!-- Start footer -->
+    <footer>
+        <div class="icons">
+            <a href="https://facebook.com" target="_blank">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+
+            <a href="https://instagram.com" target="_blank">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="https://tiktok.com" target="_blank">
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
+
+            <a href="https://x.com" target="_blank">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+        </div>
+
+        <div class="links">
+            <ul>
+                <li>Home</li>
+                <li>About</li>
+                <li></li>
+                <li>Contact</li>
+                <li>Services</li>
+            </ul>
+        </div>
+
+        <div class="copy">
+            <p>&copy; FCI-ZU. All rights reserved.</p>
+        </div>
+
+    </footer>
+    <!-- end footer -->
+</body>
+
+</html>
