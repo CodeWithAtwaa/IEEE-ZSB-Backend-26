@@ -22,3 +22,6 @@ Route::post('/submit', function () {
     Idea::Create(['message' => $message]);
     return redirect('/')->with('success', 'Message submitted successfully!');
 })->name('submit');
+
+
+Route::get('/admin', [App\Http\Controllers\Controller::class, 'index'])->middleware('auth');
