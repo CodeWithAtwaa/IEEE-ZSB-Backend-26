@@ -257,7 +257,6 @@ or
 Gate::authorize('update', $post);
 ````
 
-
 ### When to Use Which
 
 Use Gate for:
@@ -275,13 +274,415 @@ Update Product
 View Order
 Cancel Booking
 
+---
 
----------
+## use UTC in time Not timestamp
+
+- Make test in your time
+
+---
+
+## Sanctum vs Passport
+
+- Both Laravel Sanctum and Laravel Passport provide API authentication, but they solve different problems.
+
+```
+| Feature                | Laravel Sanctum | Laravel Passport         |
+| ---------------------- | --------------- | ------------------------ |
+| Complexity             | Simple          | Advanced                 |
+| OAuth2                 | ❌ No            | ✅ Yes                    |
+| Personal Access Tokens | ✅ Yes           | ✅ Yes                    |
+| SPA Authentication     | ✅ Excellent     | Possible but unnecessary |
+| Mobile Apps            | ✅ Yes           | ✅ Yes                    |
+| Third-party apps       | ❌ Not ideal     | ✅ Yes                    |
+| Setup                  | Easy            | More complex             |
+| Performance            | Lightweight     | Heavier                  |
 
 
-## use UTC in time Not timestamp 
-- Make test in your time 
+```
 
--------
+### Laravel Sanctum
 
+Sanctum is designed for:
 
+- Single Page Applications (Vue, React, Angular)
+- Mobile applications
+- APIs used only by your own frontend
+- Personal access tokens
+
+### Laravel Passport
+
+- Passport is completely different.
+
+- It implements the OAuth2 protocol.
+
+- OAuth2 allows users to authorize other applications to access their data without sharing their passwords.
+
+---
+
+## What is the (XSRF & CSRF) is there a difference between them?
+
+- Yes. CSRF and XSRF refer to the same security vulnerability. The only difference is the name.
+
+#### What is CSRF/XSRF?
+
+- A CSRF attack tricks a logged-in user into sending an unwanted request to a trusted website without their knowledge.
+
+- The attack works because the browser automatically includes cookies with requests to the site.
+
+```php
+<form method="POST" action="/posts">
+    @csrf
+
+    <input type="text" name="title">
+
+    <button>Create</button>
+</form>
+```
+
+### When Is CSRF Protection Needed?
+
+- CSRF protection is needed when authentication relies on cookies, because browsers automatically attach cookies to requests.
+
+---
+
+## Defining relationships in Eloquent models (write a 2 brief about them)
+
+- Eloquent relationships define how database tables are connected. Instead of writing SQL JOIN queries manually.
+
+### 1. One-to-One (hasOne)
+
+A record in one table is related to one record in another table.
+
+Example
+
+```
+users
+-----
+id
+name
+
+profiles
+--------
+id
+user_id
+bio
+avatar
+```
+
+Each user has one profile.
+
+User Model
+
+```php
+class User extends Model
+{
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+}
+```
+
+Profile Model
+
+```php
+class Profile extends Model
+{
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+```
+
+Usage
+
+$user = User::find(1);
+$user->profile;
+
+### 2. One-to-Many (hasMany)
+
+One record owns many records.
+
+Example
+users
+
+---
+
+id
+name
+
+## posts
+
+id
+title
+user_id
+
+One user has many posts.
+
+User Model
+
+```php
+class User extends Model
+{
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+}
+```
+
+Post Model
+
+```php
+class Post extends Model
+{
+public function user()
+{
+return $this->belongsTo(User::class);
+    }
+}
+```
+
+Usage
+$user = User::find(1);
+
+$user->posts;
+
+### 3. Belongs To (belongsTo)
+
+The inverse of hasMany or hasOne.
+
+The model contains the foreign key.
+
+Example:
+
+posts
+
+id
+title
+user_id
+
+The Post belongs to a User.
+
+```php
+class Post extends Model
+{
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+```
+
+Usage:
+
+$post = Post::find(1);
+
+$post->user;
+
+### 4. Many-to-Many (belongsToMany)
+
+Many records on both sides can be related.
+
+Example
+students
+
+courses
+
+## course_student
+
+student_id
+course_id
+
+A student can enroll in many courses, and a course can have many students.
+
+Student Model
+
+```php
+class Student extends Model
+{
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
+}
+```
+
+Course Model
+
+```php
+class Course extends Model
+{
+    public function students()
+    {
+        return $this->belongsToMany(Student::class);
+    }
+}
+```
+
+- Usage
+
+$student->courses;
+
+- Attach a course:
+
+```php
+$student->courses()->attach($courseId);
+```
+
+- Detach:
+
+```php
+$student->courses()->detach($courseId);
+```
+- Sync:
+
+```php
+$student->courses()->sync([1, 2, 3]);
+```
+### 5. Has One Through (hasOneThrough)
+
+Access a related model through an intermediate model.
+
+Example
+Mechanic
+↓
+Car
+↓
+Owner
+
+A mechanic services one car, and each car has one owner.
+
+```php
+class Mechanic extends Model
+{
+    public function owner()
+    {
+      return $this->hasOneThrough(
+        Owner::class,
+        Car::class
+        ;
+    }
+}
+```
+
+Usage:
+$mechanic->owner;
+
+### 6. Has Many Through (hasManyThrough)
+
+Access many related models through an intermediate model.
+
+Example
+Country
+↓
+User
+↓
+Post
+
+A country has many users, and those users have many posts.
+
+```php
+class Country extends Model
+{
+public function posts()
+{
+return $this->hasManyThrough(
+Post::class,
+User::class
+);
+}
+}
+```
+
+Usage:
+$country->posts;
+
+7. Polymorphic Relationships
+
+A model can belong to more than one model type.
+
+Example
+
+Comments can belong to:
+
+Posts
+Videos
+comments
+
+id
+body
+commentable_id
+commentable_type
+Comment Model
+
+```php
+class Comment extends Model
+{
+public function commentable()
+{
+return $this->morphTo();
+}
+}
+```
+
+Post Model
+
+```php
+class Post extends Model
+{
+    public function comments()
+    {
+     return $this->morphMany(Comment::class, 'commentable');
+    }
+}
+
+```
+
+Video Model
+
+```php
+    class Video extends Model
+    {
+        public function comments()
+        {
+            return $this->morphMany(Comment::class, 'commentable');
+        }
+    }
+```
+
+Usage:
+
+$post->comments;
+
+$video->comments;
+
+### 8. Many-to-Many Polymorphic (morphToMany)
+
+A polymorphic many-to-many relationship.
+
+Example
+
+Tags can belong to:
+
+Posts
+Videos
+tags
+
+## taggables
+
+tag_id
+taggable_id
+taggable_type
+
+```php
+class Post extends Model
+{
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+}
+```
